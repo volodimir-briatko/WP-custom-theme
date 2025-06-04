@@ -1,0 +1,93 @@
+<?php
+/*
+Template Name: Products
+*/
+$post_id = get_the_ID();
+get_header();
+
+?>
+<div class="crumbs">
+  <div class="container">
+    <ul class="crumbs__list">
+      <li><a href="/"><span>Home</span></a></li>
+      <li><span><?php echo get_the_title($post_id); ?></span></li>
+    </ul>
+  </div>
+</div>
+
+<section class="has-bg products">
+  <div class="container">
+    <h2 class="stitle products__title"><?php echo get_the_title($post_id); ?></h2>
+    <div class="products__search">
+
+      <form role="search" autocomplete="off"  method="get" class="search-form" action="<?php echo esc_url( home_url( '/' ) ); ?>">
+  <input type="text"  value="<?php echo get_search_query(); ?>"  name="s" id="products_search_inp" class="discuss-form__input search-field" placeholder="Start typing your data source">
+  <input type="hidden" value="product" name="post_type" />
+  <button type="submit" class="products__search-submit"></button>
+<?php  
+  $args = array( 'post_type' => 'product', 'posts_per_page' => 1000,  'orderby' => 'date', 'order'=>'ASC' );
+        $the_query = new WP_Query( $args );
+        if ( $the_query->have_posts() ) : ?>
+  <div id="products-search-list" class="products__search_list">
+    <ul id="popup-cities-list">
+     <?php
+        while ( $the_query->have_posts() ):
+          $the_query->the_post();
+          $gID = get_the_ID();
+        ?>
+    <li><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></li>
+    <? endwhile; wp_reset_postdata(); ?>
+  </ul>
+</div>
+<? endif; ?>
+</form>
+
+
+    </div>
+    
+
+    <?php 
+       
+
+       the_content(); 
+       ?>
+
+      <!--
+<ul class="pagination">
+          <li>
+            <a class="pagination__link pagination__link_disabled" href="#">
+              <svg width="7" height="14" viewBox="0 0 7 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 1L1 7L6 13" stroke="#3879D6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </li>
+          <li>
+            <a class="pagination__link pagination__link_active" href="#">1</a>
+          </li>
+          <li>
+            <a class="pagination__link" href="#">2</a>
+          </li>
+          <li>
+            <a class="pagination__link" href="#">3</a>
+          </li>
+          <li>
+            <a class="pagination__link" href="#">
+              <svg width="7" height="14" viewBox="0 0 7 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1L6 7L1 13" stroke="#3879D6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </li>
+        </ul>
+      -->
+    
+  </div>
+</section>
+
+<?php get_template_part( 'template-parts/gotquestions' ); ?>
+<!--featured-->
+<section class="featured">
+  <?php get_template_part( 'template-parts/feautured_products' ); ?>
+</section>
+<!--END featured-->
+
+<?php get_footer(); ?>
